@@ -77,3 +77,34 @@ intmax_t jts_numinstances(const char *restrict s, const char c)
 
 	return instances;
 }
+
+char **jts_copy_argv(int argc, char **argv)
+{
+	if (argc <= 0 || argv == NULL) {
+		return NULL;
+	}
+
+	char **s = calloc(argc, sizeof(char*));
+
+	if (s == NULL) {
+		return NULL;
+	}
+
+	int len = 0;
+
+	for (int i = 0; i < argc; i++) {
+
+		len = strlen(argv[i]);
+
+		s[i] = calloc(len + 1, 1);
+
+		if (s[i] == NULL) {
+			break;
+		}
+
+		strncpy(s[i], argv[i], len);
+	}
+
+	return s;
+
+}

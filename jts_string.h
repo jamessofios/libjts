@@ -18,3 +18,8 @@ intmax_t jts_numinstances(const char *restrict, const char);
 /* return number of instances of a char in a string
  * Returns -1 on error
  */
+
+char **jts_copy_argv(int argc, char **argv);
+/* Return dynamically allocated array of strings containing a copy argv.
+ * User must free() the strings and the array itself.
+ */
