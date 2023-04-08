@@ -10,8 +10,8 @@ char* jts_strrev(const char *restrict);
  */
 
 bool jts_ispalendrome(const char *restrict);
-/* It's sometimes useful...
- *
+/* Returns true if the string argument is a palendrome.
+ * Returns false otherwise.
  */
 
 intmax_t jts_numinstances(const char *restrict, const char);
