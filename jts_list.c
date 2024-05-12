@@ -4,17 +4,31 @@ static node* node_create(const size_t size, const void *restrict data)
 {
 	node* n	= malloc(sizeof(*n));
 
-	if (n == NULL) goto err;
+	if (n == NULL) {
+		goto err;
+	}
 
 	n->d = malloc(size);
 
-	if (n->d == NULL) goto err;
+	if (n->d == NULL) {
+		goto err;
+	}
 
 	memcpy(n->d, data, size);
 
 	err:
 
 	return n;
+}
+
+static void node_destroy(node *restrict deletion)
+{
+
+	free(deletion->d);
+	deletion->d = NULL;
+
+	free(deletion);
+	deletion = NULL;
 }
 
 list* new_list(void)
@@ -89,6 +103,7 @@ void* pop(list* l)
 
 		tmp = l->head->next;
 
+//		if you do this, then the returned pointer would point to an already freed piece of data
 //		free(l->head->d);
 
 		free(l->head);
@@ -170,4 +185,65 @@ list* argvtol(const int argc, char **argv)
 	}
 
 	return l;
+}
+
+list* map_inplace(list *l, void (*fp)(void *))
+{
+	node *tmp = l->head;
+
+	for (uintmax_t i = 0; i < l->total; i++) {
+
+		(*fp)(tmp->d);
+
+		if (tmp->next == NULL) {
+
+			break;
+
+		} else {
+
+			tmp = tmp->next;
+		}
+	}
+
+	return l;
+}
+
+list* filter_inplace(list *l, int (*is_true)(void *))
+{
+	node *prev = NULL;
+	node *current = l->head;
+
+	while (current != NULL) {
+
+		if ((*is_true)(current->d)) {
+			if (prev == NULL) {
+				l->head = current->next;
+				node_destroy(current);
+				l->total--;
+				current = l->head;
+			} else {
+				prev->next = current->next;
+				node_destroy(current);
+				l->total--;
+				current = prev->next;
+			}
+		} else {
+			prev = current;
+			current = current->next;
+		}
+	}
+	return l;
+}
+
+list* map(list *l, int (*compar)(const void *, const void *))
+{
+
+	return NULL;
+
+}
+
+list* filter(list *l, int (*compar)(const void *, const void *))
+{
+
+	return NULL;
 }

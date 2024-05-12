@@ -48,3 +48,18 @@ list *argvtol(const int argc, char **argv);
  * there are spaces as delimiters for the argv strings.
  * You must free the list that is returned.
  */
+
+list* map_inplace(list *l, void (*fp)(void *));
+/* input: list
+ * input: callback function that gets applied to each element of the list
+ * output: pointer to the same list as the input
+ */
+
+list* filter_inplace(list *l, int (*is_true)(void *));
+/* input: list
+ * input: callback function that gets applied to each element of the list
+ * output: pointer to the same list as the input
+ */
+
+list* map(list *l, int (*compar)(const void *, const void *));
+list* filter(list *l, int (*compar)(const void *, const void *));
