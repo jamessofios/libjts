@@ -26,7 +26,7 @@ If the macros of iso646.h are not already defined, then I define them myself
 	#define not !
 #endif
 
-#ifndef
+#ifndef not_eq
 	#define not_eq !=
 #endif
 
